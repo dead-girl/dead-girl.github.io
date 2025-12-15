@@ -170,6 +170,11 @@
       color:#0c0b12;
       border-color: rgba(255,255,255,.18);
     }
+.btn.roombtn.active{
+  background: linear-gradient(135deg, rgba(184,124,255,.88), rgba(94,231,255,.70));
+  color:#0c0b12;
+  border-color: rgba(255,255,255,.18);
+}
 
     .actions{
       display:flex;
@@ -219,10 +224,10 @@
         </div>
 
         <div class="actions">
-          <a class="btn primary" href="#truth">#truth</a>
-          <a class="btn" href="#Corinthians">#Corinthians</a>
-          <a class="btn" href="#cyber">#cyber</a>
-          <a class="btn" href="#chaos">#chaos</a>
+<a class="btn roombtn" href="#truth" data-room="#truth">#truth</a>
+<a class="btn roombtn" href="#Corinthians" data-room="#Corinthians">#Corinthians</a>
+<a class="btn roombtn" href="#cyber" data-room="#cyber">#cyber</a>
+<a class="btn roombtn" href="#chaos" data-room="#chaos">#chaos</a>
           <div class="status"><span class="dot"></span> online-ish</div>
 
           <div class="status"><span class="dot"></span> online-ish</div>
@@ -241,45 +246,107 @@
 
 <script>
   (function () {
-    var ALL_ROOMS = ["#truth", "#Corinthians", "#cyber", "#chaos"];
+    var CANON = {
+      "#truth": "#truth",
+      "#corinthians": "#Corinthians",
+      "#cyber": "#cyber",
+      "#chaos": "#chaos"
+    };
 
-    function roomFromHash() {
-      var h = (window.location.hash || "").trim();
-      if (!h || h === "#") return "#truth";
-      return h.startsWith("#") ? h : ("#" + h);
+    function normaliseRoom(raw) {
+      var r = (raw || "").trim();
+      if (!r) return null;
+      if (!r.startsWith("#")) r = "#" + r;
+      var key = r.toLowerCase();
+      return CANON[key] || null;
     }
 
-    function uniqRooms(firstRoom) {
-      var first = (firstRoom || "#truth");
-      var firstLower = first.toLowerCase();
+    function getRoomFromHash() {
+      return normaliseRoom(window.location.hash) || "#truth";
+    }
 
-      var ordered = [first];
-      for (var i = 0; i < ALL_ROOMS.length; i++) {
-        if (ALL_ROOMS[i].toLowerCase() !== firstLower) ordered.push(ALL_ROOMS[i]);
+    function parseRoomsParam() {
+      var params = new URLSearchParams(window.location.search || "");
+      var raw = params.get("rooms");
+      if (!raw) return [];
+      var parts = raw.split(",");
+      var out = [];
+      var seen = {};
+      for (var i = 0; i < parts.length; i++) {
+        var r = normaliseRoom(parts[i]);
+        if (r && !seen[r.toLowerCase()]) {
+          seen[r.toLowerCase()] = true;
+          out.push(r);
+        }
       }
-      return ordered;
+      return out;
     }
 
-    function setHeaderOnly() {
-      var room = roomFromHash();
+    function setHeader(room) {
       document.getElementById("roomLabel").textContent = room;
       document.title = "Chat • " + room;
     }
 
-    function connectOnce() {
-      var room = roomFromHash();
-      var rooms = uniqRooms(room); // put chosen room first
-      document.getElementById("chatframe").src = "https://webchat.atrum.org/" + rooms.join(",");
+    function applyButtons(selectedRooms, activeRoom) {
+      var allowed = {};
+      for (var i = 0; i < selectedRooms.length; i++) {
+        allowed[selectedRooms[i].toLowerCase()] = true;
+      }
+
+      var btns = document.querySelectorAll(".roombtn[data-room]");
+      for (var j = 0; j < btns.length; j++) {
+        var r = normaliseRoom(btns[j].getAttribute("data-room"));
+        if (!r) continue;
+
+        // Hide buttons for rooms the user didn’t select
+        btns[j].style.display = allowed[r.toLowerCase()] ? "" : "none";
+
+        // Active glow
+        if (r.toLowerCase() === activeRoom.toLowerCase()) btns[j].classList.add("active");
+        else btns[j].classList.remove("active");
+      }
     }
 
-    // Connect ONCE (no reconnects when you click room buttons)
-    connectOnce();
-    setHeaderOnly();
+    function buildOrderedRooms(active, rooms) {
+      // ensure active is included + first
+      var out = [active];
+      var seen = {};
+      seen[active.toLowerCase()] = true;
 
-    // Clicking your room buttons now only updates the page label (no new nick prompts)
-    window.addEventListener("hashchange", setHeaderOnly);
+      for (var i = 0; i < rooms.length; i++) {
+        var r = rooms[i];
+        if (!seen[r.toLowerCase()]) {
+          seen[r.toLowerCase()] = true;
+          out.push(r);
+        }
+      }
+      return out;
+    }
+
+    // Rooms selected by the user (from index.html)
+    var selected = parseRoomsParam();
+    if (!selected.length) selected = ["#truth"]; // safe default
+
+    // Active room is the hash (e.g. #cyber). If it's not in selected, add it.
+    var active = getRoomFromHash();
+    selected = buildOrderedRooms(active, selected);
+
+    // Connect ONCE (same nick/session)
+    document.getElementById("chatframe").src = "https://webchat.atrum.org/" + selected.join(",");
+
+    // Set header + glow
+    setHeader(active);
+    applyButtons(selected, active);
+
+    // Don’t reconnect on room change — just update label + glow
+    window.addEventListener("hashchange", function () {
+      var now = getRoomFromHash();
+      setHeader(now);
+      applyButtons(selected, now);
+    });
   })();
 </script>
+
 
 </body>
 </html>
