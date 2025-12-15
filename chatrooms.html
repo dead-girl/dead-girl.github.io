@@ -3,47 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chatrooms • Dead Girl Chat</title>
+  <title>Chatrooms • dead_chat</title>
   <link rel="stylesheet" href="./assets/style.css" />
   <style>
-    .rooms{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    .room-card{
-      display:grid;
-      grid-template-columns: 340px 1fr;
-      gap:16px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .room-card{ grid-template-columns: 1fr; }
-    }
+    .rooms{ display:grid; grid-template-columns:1fr; gap:14px; }
+    .room-card{ display:grid; grid-template-columns:340px 1fr; gap:16px; align-items:start; }
+    @media (max-width:980px){ .room-card{ grid-template-columns:1fr; } }
 
     .poster{
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px; border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.18);
-      min-height: 220px;
-      padding:16px;
-      position:relative;
-      overflow:hidden;
+      min-height:220px; padding:16px; position:relative; overflow:hidden;
     }
-    .poster h2{
-      margin:0;
-      font-family: var(--mono);
-      font-size:16px;
-    }
+    .poster h2{ margin:0; font-family:var(--mono); font-size:16px; }
     .poster .tag{
-      margin-top:10px;
-      display:inline-block;
-      font-family: var(--mono);
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.16);
+      margin-top:10px; display:inline-block; font-family:var(--mono); font-size:12px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.16);
       color: rgba(255,255,255,.80);
     }
 
@@ -72,75 +48,42 @@
         rgba(0,0,0,.18);
     }
 
-    .info h3{
-      margin:0 0 8px 0;
-      font-size:18px;
-      letter-spacing:-.3px;
-    }
-    .info p{
-      margin:0 0 12px 0;
-      color: var(--muted);
-      line-height:1.6;
-    }
+    .info h3{ margin:0 0 8px 0; font-size:18px; letter-spacing:-.3px; }
+    .info p{ margin:0 0 12px 0; color:var(--muted); line-height:1.6; }
     .meta{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-      font-family: var(--mono);
-      font-size:12px;
-      color: rgba(255,255,255,.76);
+      display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;
+      font-family:var(--mono); font-size:12px; color: rgba(255,255,255,.76);
     }
-    .pill{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
-    }
+    .pill{ padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.14); }
 
-    .commands{
-      border-top:1px dashed rgba(255,255,255,.14);
-      padding-top:12px;
-      margin-top:12px;
-    }
+    .commands{ border-top:1px dashed rgba(255,255,255,.14); padding-top:12px; margin-top:12px; }
     .commands .code{
-      font-family: var(--mono);
-      font-size:12px;
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:10px 12px;
-      overflow:auto;
-      color: rgba(255,255,255,.86);
+      font-family:var(--mono); font-size:12px;
+      background: rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.10);
+      border-radius:14px; padding:10px 12px; overflow:auto; color: rgba(255,255,255,.86);
       line-height:1.6;
     }
 
-    .btnrow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
+    .btnrow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
   </style>
 </head>
 
 <body data-page="chatrooms">
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+      <a class="brand" href="./index.html" aria-label="Go to Home">
+        <img class="logo-img" src="./assets/deadchat_logo_transparent_small.png" alt="DEADCHAT" />
         <div>
-          <div class="site-name">Dead Girl Chat</div>
-          <div class="site-tag">room posters • vibes • bot commands</div>
+          <div class="site-name">dead_chat</div>
+          <div class="site-tag">pick a vibe • jump straight in</div>
         </div>
-      </div>
+      </a>
 
       <nav class="nav" aria-label="Site navigation">
         <a href="./index.html" data-page="home">Home</a>
         <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
-        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
         <a href="./chatters.html" data-page="chatters">Chatters</a>
-        <a href="./quotes.html" data-page="quotes">Quotes</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now →</a>
       </nav>
     </div>
   </header>
@@ -149,45 +92,32 @@
     <div class="container">
       <section class="card">
         <h1 class="h1">Chatrooms</h1>
-        <p class="p">Click “Chat now” on any room to jump straight into that channel. Or use “Chat Now” to join multiple rooms.</p>
-
+        <p class="p">Hit “Chat now” to jump straight into that room, or use Chat Now → to join multiple rooms.</p>
         <div class="btnrow">
-          <a class="btn primary" href="./chat-now.html">CHAT NOW (multi-select)</a>
+          <a class="btn primary" href="./chat-now.html">CHAT NOW → (multi-select)</a>
         </div>
       </section>
 
       <div style="height:14px;"></div>
 
       <section class="rooms">
-        <!-- Corinthians -->
         <div class="card room-card">
           <div class="poster" data-room="#Corinthians">
             <h2>#Corinthians</h2>
             <div class="tag">faith • scripture • life</div>
-            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">
-              Poster slot (upload later)
-            </div>
+            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">Poster slot</div>
           </div>
-
           <div class="info">
             <h3>For the Christians</h3>
-            <p>Scripture, prayer, life questions, personal growth, and honest conversation — with grace and humility.</p>
-
+            <p>Scripture, prayer, life questions, personal growth, honest conversation — with grace and humility.</p>
             <div class="meta">
               <div class="pill">Tone: gentle + real</div>
               <div class="pill">Good for: support + reflection</div>
-              <div class="pill">Start here: #Corinthians</div>
             </div>
-
             <div class="commands">
               <h3 style="font-family:var(--mono); font-size:14px; margin:0 0 8px 0;">Bot commands (placeholder)</h3>
-              <div class="code">
-• !verse (random verse)<br/>
-• !prayer (add a prayer request)<br/>
-• !topic (daily reflection topic)<br/>
-              </div>
+              <div class="code">• !verse<br/>• !prayer<br/>• !topic</div>
             </div>
-
             <div class="btnrow">
               <a class="btn primary" href="./chat.html?rooms=corinthians#Corinthians">Chat now in #Corinthians</a>
               <a class="btn" href="./chat-now.html">Join multiple rooms</a>
@@ -195,35 +125,23 @@
           </div>
         </div>
 
-        <!-- cyber -->
         <div class="card room-card">
           <div class="poster" data-room="#cyber">
             <h2>#cyber</h2>
             <div class="tag">after-dark • memes • mischief</div>
-            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">
-              Poster slot (upload later)
-            </div>
+            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">Poster slot</div>
           </div>
-
           <div class="info">
             <h3>For the naughty chatters</h3>
-            <p>Playful banter, spicy jokes, shameless chaos — keep it consensual, respectful, and within the network rules.</p>
-
+            <p>Playful banter, spicy jokes, shameless chaos — keep it consensual, respectful, and within network rules.</p>
             <div class="meta">
               <div class="pill">Tone: cheeky + chaotic</div>
               <div class="pill">Good for: laughs + late-night</div>
-              <div class="pill">Start here: #cyber</div>
             </div>
-
             <div class="commands">
               <h3 style="font-family:var(--mono); font-size:14px; margin:0 0 8px 0;">Bot commands (placeholder)</h3>
-              <div class="code">
-• !meme (random meme)<br/>
-• !dare (lighthearted dare)<br/>
-• !quote (pull a spicy quote)<br/>
-              </div>
+              <div class="code">• !meme<br/>• !dare<br/>• !quote</div>
             </div>
-
             <div class="btnrow">
               <a class="btn primary" href="./chat.html?rooms=cyber#cyber">Chat now in #cyber</a>
               <a class="btn" href="./chat-now.html">Join multiple rooms</a>
@@ -231,35 +149,23 @@
           </div>
         </div>
 
-        <!-- chaos -->
         <div class="card room-card">
           <div class="poster" data-room="#chaos">
             <h2>#chaos</h2>
             <div class="tag">Agnes • games • “one more round”</div>
-            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">
-              Poster slot (upload later)
-            </div>
+            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">Poster slot</div>
           </div>
-
           <div class="info">
             <h3>Agnes game room</h3>
             <p>Games, mini-competitions, weird challenges, and fun bot stuff. A room that rewards showing up.</p>
-
             <div class="meta">
               <div class="pill">Tone: playful + competitive</div>
               <div class="pill">Good for: games + bot commands</div>
-              <div class="pill">Start here: #chaos</div>
             </div>
-
             <div class="commands">
               <h3 style="font-family:var(--mono); font-size:14px; margin:0 0 8px 0;">Bot commands (placeholder)</h3>
-              <div class="code">
-• !roll (dice roll)<br/>
-• !rank (leaderboard)<br/>
-• !quest (random challenge)<br/>
-              </div>
+              <div class="code">• !roll<br/>• !rank<br/>• !quest</div>
             </div>
-
             <div class="btnrow">
               <a class="btn primary" href="./chat.html?rooms=chaos#chaos">Chat now in #chaos</a>
               <a class="btn" href="./chat-now.html">Join multiple rooms</a>
@@ -267,35 +173,23 @@
           </div>
         </div>
 
-        <!-- truth -->
         <div class="card room-card">
           <div class="poster" data-room="#truth">
             <h2>#truth</h2>
             <div class="tag">free speech • debate • real talk</div>
-            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">
-              Poster slot (upload later)
-            </div>
+            <div style="margin-top:14px; color:rgba(255,255,255,.78); font-family:var(--mono); font-size:12px;">Poster slot</div>
           </div>
-
           <div class="info">
             <h3>Free-speech channel</h3>
             <p>Big opinions welcome — attack ideas, not people. No doxxing. No cruelty. Keep it sharp, not vile.</p>
-
             <div class="meta">
               <div class="pill">Tone: direct + intense</div>
               <div class="pill">Good for: debate + perspective</div>
-              <div class="pill">Start here: #truth</div>
             </div>
-
             <div class="commands">
               <h3 style="font-family:var(--mono); font-size:14px; margin:0 0 8px 0;">Bot commands (placeholder)</h3>
-              <div class="code">
-• !rules (quick rules)<br/>
-• !topic (topic generator)<br/>
-• !stats (channel stats)<br/>
-              </div>
+              <div class="code">• !rules<br/>• !topic<br/>• !stats</div>
             </div>
-
             <div class="btnrow">
               <a class="btn primary" href="./chat.html?rooms=truth#truth">Chat now in #truth</a>
               <a class="btn" href="./chat-now.html">Join multiple rooms</a>
@@ -307,7 +201,7 @@
   </main>
 
   <div class="sticky-chat">
-    <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
+    <a class="btn primary" href="./chat-now.html">CHAT NOW →</a>
   </div>
 
   <script src="./assets/site.js"></script>
