@@ -44,9 +44,9 @@ a{ color:inherit; }
   position:absolute;
   inset:0;
   background-image: url("./cardboard.png");
-  background-repeat: repeat-x;
-  background-position: center top;
-  background-size: auto 128px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   filter: drop-shadow(0 18px 30px rgba(0,0,0,.45));
 }
 
@@ -78,48 +78,47 @@ a{ color:inherit; }
   z-index:2;
   height:128px;
   display:flex;
-  align-items:flex-start;
+  align-items:flex-end;
   justify-content:space-between;
   gap:18px;
-  padding-top:10px;
+  padding-bottom:14px;
 }
 
 /* logo like the fuggler badge: BIG + left */
 .brand{ text-decoration:none; display:flex; align-items:flex-start; }
 .logo-img{
-  width:230px;   /* <- THIS is the main fix */
+  width:260px;
   height:auto;
   display:block;
-  filter: drop-shadow(0 10px 0 rgba(0,0,0,.35));
-  transform: translateY(2px);
+  transform: translateY(18px);
+  filter:
+    drop-shadow(0 6px 0 rgba(0,0,0,.35))
+    drop-shadow(0 12px 12px rgba(0,0,0,.35));
 }
 
 /* nav: separate black “tabs” */
 .nav{
   display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding-top:16px;
+  gap:6px;
+  align-items:flex-end;
+  padding-top:38px;
 }
 
 .nav a{
   font-family: var(--fugg);
-  letter-spacing: 1px;
   text-transform: uppercase;
-  text-decoration:none;
+  letter-spacing: 1px;
 
   background:#0b0b0b;
   color:#fff;
 
-  padding: 16px 18px 14px;
-  border-radius: 0;
+  padding: 14px 16px 12px;
+  font-size:14px;
 
-  /* trapezoid tab */
-  clip-path: polygon(0% 0%, 100% 0%, 100% 78%, 10% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 76%, 12% 100%, 0% 100%);
+  box-shadow: 0 10px 0 rgba(0,0,0,.25);
 
-  box-shadow: 0 14px 0 rgba(0,0,0,.20);
-  transform: translateY(4px);
-  transition: transform .12s ease, filter .12s ease;
+  transform: translateY(10px);
 }
 
 .nav a:hover{
