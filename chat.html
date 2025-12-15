@@ -239,24 +239,47 @@
     </div>
   </div>
 
-  <script>
-    (function () {
-      function roomFromHash() {
-        var h = (window.location.hash || "").trim();
-        if (!h || h === "#") return "#truth";
-        return h.startsWith("#") ? h : ("#" + h);
-      }
+<script>
+  (function () {
+    var ALL_ROOMS = ["#truth", "#Corinthians", "#cyber", "#chaos"];
 
-      function setRoom() {
-        var room = roomFromHash();
-        document.getElementById("roomLabel").textContent = room;
-        document.title = "Chat • " + room;
-        document.getElementById("chatframe").src = "https://webchat.atrum.org/" + room;
-      }
+    function roomFromHash() {
+      var h = (window.location.hash || "").trim();
+      if (!h || h === "#") return "#truth";
+      return h.startsWith("#") ? h : ("#" + h);
+    }
 
-      window.addEventListener("hashchange", setRoom);
-      setRoom();
-    })();
-  </script>
+    function uniqRooms(firstRoom) {
+      var first = (firstRoom || "#truth");
+      var firstLower = first.toLowerCase();
+
+      var ordered = [first];
+      for (var i = 0; i < ALL_ROOMS.length; i++) {
+        if (ALL_ROOMS[i].toLowerCase() !== firstLower) ordered.push(ALL_ROOMS[i]);
+      }
+      return ordered;
+    }
+
+    function setHeaderOnly() {
+      var room = roomFromHash();
+      document.getElementById("roomLabel").textContent = room;
+      document.title = "Chat • " + room;
+    }
+
+    function connectOnce() {
+      var room = roomFromHash();
+      var rooms = uniqRooms(room); // put chosen room first
+      document.getElementById("chatframe").src = "https://webchat.atrum.org/" + rooms.join(",");
+    }
+
+    // Connect ONCE (no reconnects when you click room buttons)
+    connectOnce();
+    setHeaderOnly();
+
+    // Clicking your room buttons now only updates the page label (no new nick prompts)
+    window.addEventListener("hashchange", setHeaderOnly);
+  })();
+</script>
+
 </body>
 </html>
