@@ -3,409 +3,170 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>#truth • Atrum Webchat</title>
-
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
-
-    :root{
-      --bg1:#090914;
-      --bg2:#120b1e;
-      --card:rgba(18, 18, 32, .62);
-      --stroke:rgba(255,255,255,.12);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-      --neon1:#b87cff;   /* purple */
-      --neon2:#5ee7ff;   /* cyan */
-      --neon3:#ff6bd6;   /* pink  */
-      --good:#5dff9a;
-    }
-
-    *{ box-sizing:border-box; }
-
-    html, body{ height:100%; }
-    body{
-      margin:0;
-      font-family:var(--sans);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(184,124,255,.18), transparent 55%),
-        radial-gradient(900px 700px at 85% 15%, rgba(94,231,255,.14), transparent 55%),
-        radial-gradient(900px 900px at 60% 95%, rgba(255,107,214,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
-
-    /* subtle “room noise” */
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      background-image:
-        radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 22px 22px;
-      opacity:.35;
-      pointer-events:none;
-      mix-blend-mode: overlay;
-    }
-
-    .wrap{
-      min-height:100%;
-      display:grid;
-      place-items:center;
-      padding:56px 18px;
-      position:relative;
-      isolation:isolate;
-    }
-
-    /* messy-room stickers */
-    .sticker{
-      position:absolute;
-      padding:10px 12px;
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      background:rgba(0,0,0,.22);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
-      font-family:var(--mono);
-      font-size:12px;
-      letter-spacing:.2px;
-      user-select:none;
-      transform: rotate(var(--r, 0deg));
-      opacity:.95;
-      z-index:0;
-      white-space:nowrap;
-    }
-    .s1{ top:26px; left:18px; --r:-7deg; }
-    .s2{ top:110px; right:18px; --r:8deg; }
-    .s3{ bottom:64px; left:22px; --r:4deg; }
-    .s4{ bottom:26px; right:18px; --r:-6deg; }
-
-    .sticker b{ color:var(--neon2); font-weight:700; }
-    .sticker em{ color:var(--neon3); font-style:normal; }
-
-    .card{
-      width:min(920px, 100%);
-      border:1px solid var(--stroke);
-      background:var(--card);
-      border-radius:22px;
-      padding:22px;
-      backdrop-filter: blur(14px);
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.55),
-        0 0 0 1px rgba(255,255,255,.06) inset;
-      position:relative;
-      z-index:1;
-    }
-
-    .top{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      padding:6px 4px 16px 4px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-
-    .left{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      min-width: 260px;
-    }
-
-    /* cat-girl-ish avatar: cat ears + glow */
-    .avatar{
-      width:56px; height:56px;
-      border-radius:16px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
-        linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
-      position:relative;
-      box-shadow:
-        0 18px 45px rgba(184,124,255,.22),
-        0 18px 45px rgba(94,231,255,.12);
-      border:1px solid rgba(255,255,255,.14);
-    }
-    .avatar:before, .avatar:after{
-      content:"";
-      position:absolute;
-      top:-12px;
-      width:18px; height:18px;
-      background: linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
-      border:1px solid rgba(255,255,255,.14);
-      transform: rotate(45deg);
-      border-radius:4px;
-      opacity:.95;
-    }
-    .avatar:before{ left:8px; }
-    .avatar:after{ right:8px; }
-
-    h1{
-      margin:0;
-      font-size:26px;
-      line-height:1.1;
-      letter-spacing:-.6px;
-    }
-    .sub{
-      margin:6px 0 0 0;
-      color:var(--muted);
-      font-size:14px;
-    }
-    .tagline{
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(255,255,255,.78);
-      margin-top:6px;
-    }
-    .tag{
-      display:inline-block;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.18);
-      margin-right:6px;
-    }
-
-    .status{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(255,255,255,.80);
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.14);
-    }
-    .dot{
-      width:9px; height:9px;
-      border-radius:50%;
-      background:var(--good);
-      box-shadow: 0 0 18px rgba(93,255,154,.55);
-    }
-
-    .main{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:18px;
-      padding:18px 4px 6px 4px;
-    }
-    @media (max-width: 820px){
-      .main{ grid-template-columns: 1fr; }
-    }
-
-    .panel{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      background:rgba(0,0,0,.16);
-      padding:16px;
-    }
-
-    .panel h2{
-      margin:0 0 10px 0;
-      font-size:14px;
-      font-family:var(--mono);
-      color:rgba(255,255,255,.86);
-      letter-spacing:.3px;
-    }
-
-    .panel p{
-      margin:0 0 10px 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      text-decoration:none;
-      color:rgba(255,255,255,.92);
-      background:rgba(0,0,0,.18);
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      font-weight:600;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.24);
-      box-shadow: 0 18px 40px rgba(0,0,0,.35);
-    }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(184,124,255,.88), rgba(94,231,255,.70));
-      color:#0c0b12;
-      border-color: rgba(255,255,255,.18);
-      box-shadow: 0 18px 45px rgba(184,124,255,.18);
-    }
-    .btn .kbd{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:2px 8px;
-      border-radius:10px;
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.86);
-    }
-    .btn.primary .kbd{
-      background: rgba(255,255,255,.20);
-      color: rgba(0,0,0,.78);
-      border-color: rgba(255,255,255,.18);
-    }
-
-    details{
-      margin-top:12px;
-      border-top:1px dashed rgba(255,255,255,.14);
-      padding-top:12px;
-      color:var(--muted);
-    }
-    summary{
-      cursor:pointer;
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(255,255,255,.82);
-      user-select:none;
-    }
-    .code{
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(255,255,255,.86);
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:10px 12px;
-      overflow:auto;
-      margin-top:10px;
-    }
-
-    .links a{
-      color: rgba(255,255,255,.85);
-      text-decoration: none;
-      border-bottom:1px dotted rgba(255,255,255,.28);
-    }
-    .links a:hover{
-      border-bottom-color: rgba(94,231,255,.70);
-    }
-
-    footer{
-      margin-top:12px;
-      padding-top:14px;
-      border-top:1px solid rgba(255,255,255,.10);
-      display:flex;
-      gap:10px;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      color:rgba(255,255,255,.62);
-      font-size:12px;
-      font-family:var(--mono);
-    }
-
-    .tiny{
-      opacity:.85;
-    }
-  </style>
+  <title>Dead Girl Chat • Atrum</title>
+  <link rel="stylesheet" href="./assets/style.css" />
 </head>
-<body>
-  <div class="wrap">
-    <div class="sticker s1">=^.^= <b>catgirl</b> mode: <em>on</em></div>
-    <div class="sticker s2">tip: type <b>/join #truth</b> (or your room)</div>
-    <div class="sticker s3">keyboard crumbs • energy drink • tabs x47</div>
-    <div class="sticker s4">status: “brb fixing my config”</div>
 
-    <div class="card">
-      <div class="top">
-        <div class="left">
-          <div class="avatar" aria-hidden="true"></div>
-          <div>
-            <h1>#truth</h1>
-            <p class="sub">Atrum Webchat gateway — messy room, nerdy vibes, real talk.</p>
-            <div class="tagline">
-              <span class="tag">/join #truth</span>
-              <span class="tag">no downloads</span>
-              <span class="tag">open in browser</span>
+<body data-page="home">
+  <!-- Fixed header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="site-name">Dead Girl Chat</div>
+          <div class="site-tag">nerdy room • messy desk • real people</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Site navigation">
+        <a href="./index.html" data-page="home">Home</a>
+        <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
+        <a href="./chatters.html" data-page="chatters">Chatters</a>
+        <a href="./quotes.html" data-page="quotes">Quotes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container hero">
+
+      <!-- HERO SLIDER -->
+      <section class="card">
+        <h1 class="h1">Welcome to the Rooms</h1>
+        <p class="p">Pick a vibe. Same browser, same nick, same crew — just different corners of the house.</p>
+
+        <div class="slider" style="margin-top:16px;">
+          <!-- #Corinthians -->
+          <div class="slide active" style="
+            background:
+              radial-gradient(900px 380px at 20% 20%, rgba(184,124,255,.22), transparent 55%),
+              radial-gradient(700px 340px at 80% 10%, rgba(94,231,255,.14), transparent 55%),
+              linear-gradient(135deg, rgba(25,18,40,.65), rgba(8,8,14,.35));
+          ">
+            <h2>#Corinthians</h2>
+            <p>For the Christians — scripture, life, prayer, honest questions, gentle truth. Grace over judgement.</p>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="./chat.html#Corinthians">Enter #Corinthians</a>
+              <a class="btn" href="./chatrooms.html">See all rooms</a>
             </div>
           </div>
-        </div>
 
-        <div class="status"><span class="dot"></span> online-ish</div>
-      </div>
-
-      <div class="main">
-<div class="panel">
-  <h2>CHOOSE YOUR ROOM</h2>
-  <p>Pick a doorway. Chat opens in-theme on this site.</p>
-
-  <div class="actions">
-    <a class="btn primary" href="./chat.html#truth">#truth <span class="kbd">free-speech</span></a>
-    <a class="btn" href="./chat.html#Corinthians">#Corinthians <span class="kbd">faith</span></a>
-    <a class="btn" href="./chat.html#cyber">#cyber <span class="kbd">after-dark</span></a>
-    <a class="btn" href="./chat.html#chaos">#chaos <span class="kbd">Agnes</span></a>
-  </div>
-
-  <div class="tiny" style="margin-top:14px; line-height:1.6; color:rgba(255,255,255,.72);">
-    <div><strong>#Corinthians</strong> — for the Christians: scripture, life, prayer, gentle truth. Bring grace, not judgement.</div>
-    <div><strong>#cyber</strong> — for the naughty chatters: playful banter, memes, and mischief… keep it consensual and keep it respectful.</div>
-    <div><strong>#chaos</strong> — Agnes game room: games, challenges, and “one more round” energy.</div>
-    <div><strong>#truth</strong> — free-speech channel: big opinions welcome, but attack ideas not people (no doxxing/slurs).</div>
-  </div>
-
-  <details>
-    <summary>if you get lost (nerd help)</summary>
-    <div class="code">
-1) Open chat<br/>
-2) Pick a nickname<br/>
-3) If it doesn't auto-join, type:<br/>
-&nbsp;&nbsp;/join #truth<br/>
-&nbsp;&nbsp;/join #Corinthians<br/>
-&nbsp;&nbsp;/join #cyber<br/>
-&nbsp;&nbsp;/join #chaos
-    </div>
-  </details>
-</div>
-
-
-          <details>
-            <summary>if you get lost (nerd help)</summary>
-            <div class="code">
-1) Open chat<br/>
-2) Pick a nickname<br/>
-3) If it doesn't auto-join, type:<br/>
-&nbsp;&nbsp;/join #truth
+          <!-- #cyber -->
+          <div class="slide" style="
+            background:
+              radial-gradient(900px 380px at 25% 15%, rgba(255,107,214,.20), transparent 55%),
+              radial-gradient(700px 340px at 85% 20%, rgba(94,231,255,.12), transparent 55%),
+              linear-gradient(135deg, rgba(40,10,28,.62), rgba(8,8,14,.35));
+          ">
+            <h2>#cyber</h2>
+            <p>For the naughty chatters — playful banter, memes, mischief. Keep it consensual, keep it respectful.</p>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="./chat.html#cyber">Enter #cyber</a>
+              <a class="btn" href="./chatrooms.html">See all rooms</a>
             </div>
-          </details>
-        </div>
+          </div>
 
-        <div class="panel links">
-          <h2>HOUSE RULES</h2>
-          <p>Official Atrum info:</p>
-          <p>
-            <a href="https://www.atrum.org/rules/" target="_blank" rel="noopener">Rules</a><br/>
-            <a href="https://www.atrum.org/charter/" target="_blank" rel="noopener">Charter</a><br/>
-            <a href="https://www.atrum.org/contact/" target="_blank" rel="noopener">Contact</a>
-          </p>
-          <p class="tiny">Pro move: keep it civil — chaos is fine, cruelty isn’t.</p>
-        </div>
-      </div>
+          <!-- #chaos -->
+          <div class="slide" style="
+            background:
+              radial-gradient(900px 380px at 15% 25%, rgba(94,231,255,.18), transparent 55%),
+              radial-gradient(700px 340px at 85% 10%, rgba(184,124,255,.14), transparent 55%),
+              linear-gradient(135deg, rgba(10,30,35,.58), rgba(8,8,14,.35));
+          ">
+            <h2>#chaos</h2>
+            <p>Agnes game room — games, challenges, chaos-laughs, and “one more round” energy.</p>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="./chat.html#chaos">Enter #chaos</a>
+              <a class="btn" href="./chatrooms.html">See all rooms</a>
+            </div>
+          </div>
 
-      <footer>
-        <span>dead-girl.github.io</span>
-        <span>made with ☕ + too many tabs</span>
-      </footer>
+          <!-- #truth -->
+          <div class="slide" style="
+            background:
+              radial-gradient(900px 380px at 20% 15%, rgba(93,255,154,.12), transparent 55%),
+              radial-gradient(700px 340px at 85% 15%, rgba(184,124,255,.12), transparent 55%),
+              linear-gradient(135deg, rgba(20,26,22,.58), rgba(8,8,14,.35));
+          ">
+            <h2>#truth</h2>
+            <p>Free-speech channel — big opinions welcome. Attack ideas, not people. No doxxing, no cruelty.</p>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="./chat.html#truth">Enter #truth</a>
+              <a class="btn" href="./chatrooms.html">See all rooms</a>
+            </div>
+          </div>
+
+          <!-- dots -->
+          <div class="dots" aria-label="Slider controls">
+            <div class="dot active" title="Corinthians"></div>
+            <div class="dot" title="cyber"></div>
+            <div class="dot" title="chaos"></div>
+            <div class="dot" title="truth"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="card">
+        <h2 style="margin:0 0 10px 0; font-size:18px; font-family:var(--mono);">ABOUT THIS PLACE</h2>
+        <p class="p">
+          This is a little corner of the internet where chatters come together to talk, laugh, vent, debate,
+          share wins, share chaos, and still show up tomorrow. Different rooms, different vibes — same house.
+        </p>
+      </section>
+
+      <!-- WHY CHAT IS GOOD -->
+      <section class="card">
+        <h2 style="margin:0 0 14px 0; font-size:18px; font-family:var(--mono);">WHY CHATTING IS GOOD FOR YOU</h2>
+
+        <div class="grid">
+          <div class="icon-card">
+            <div class="icon">🧠 dopamine (the good kind)</div>
+            <h3>Micro-connection</h3>
+            <p>A quick hello can interrupt doom spirals and bring you back into the human world.</p>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon">🫶 belonging</div>
+            <h3>Low-pressure community</h3>
+            <p>Drop in, talk, lurk, laugh — you don’t have to “perform” to be welcome.</p>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon">⚡ perspective</div>
+            <h3>Reality check</h3>
+            <p>You get reminded that your thoughts aren’t the whole universe — and that’s a relief.</p>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon">🎮 play</div>
+            <h3>Joy + games</h3>
+            <p>Sometimes the nervous system just needs fun. Chaos is a form of care.</p>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon">🧰 support</div>
+            <h3>Help without the awkward</h3>
+            <p>Ask for advice, get ideas, ignore the rest. It’s your life — we’re just the toolbox.</p>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon">🕯️ grounding</div>
+            <h3>Ritual</h3>
+            <p>Showing up regularly is a tiny anchor. Tiny anchors hold big ships.</p>
+          </div>
+        </div>
+      </section>
     </div>
+  </main>
+
+  <!-- Sticky CHAT NOW button -->
+  <div class="sticky-chat">
+    <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
   </div>
+
+  <script src="./assets/site.js"></script>
 </body>
 </html>
