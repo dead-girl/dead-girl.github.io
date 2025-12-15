@@ -5,63 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>dead_chat • Atrum</title>
   <link rel="stylesheet" href="./assets/style.css" />
-
-  <style>
-    /* Home-only polish (we’ll roll this into style.css for all pages next) */
-    .brand { text-decoration:none; color: inherit; }
-    .logo-img{
-      width:40px; height:40px;
-      border-radius:14px;
-      object-fit:cover;
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow: 0 18px 45px rgba(184,124,255,.16);
-      display:block;
-    }
-
-    .nav a{
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
-    }
-    .nav a:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.28);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 18px 40px rgba(0,0,0,.22);
-    }
-
-    /* Move CHAT NOW to left side (mid-screen) */
-    .sticky-chat{
-      left:18px;
-      top:50%;
-      bottom:auto;
-      transform: translateY(-50%);
-    }
-    .sticky-chat .btn{
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      padding:14px 12px;
-      border-radius: 16px;
-      letter-spacing: .4px;
-    }
-
-    /* Big emojis */
-    .big-emoji{
-      font-size: 40px;
-      line-height: 1;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 8px 18px rgba(0,0,0,.28));
-    }
-  </style>
 </head>
 
 <body data-page="home">
-  <!-- Fixed header -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="./index.html" aria-label="Go to Home">
-        <img class="logo-img" src="https://sharey.org/WgqWZ6.png" alt="dead_chat logo" />
+        <img class="logo-img" src="./assets/deadchat_logo_transparent_small.png" alt="DEADCHAT" />
         <div>
           <div class="site-name">dead_chat</div>
-          <div class="site-tag">dead_girl’s lounge • messy desk • real people</div>
+          <div class="site-tag">dead_girl’s lounge • chaotic good • lag, lurk, repeat</div>
         </div>
       </a>
 
@@ -77,18 +30,16 @@
   <main class="page">
     <div class="container hero">
 
-      <!-- HERO SLIDER -->
       <section class="card">
-        <h1 class="h1">Welcome to the Rooms</h1>
-        <p class="p">Four vibes. One house. Pick a door — you’ll choose a nick once, then move around freely inside chat.</p>
+        <h1 class="h1">WELCOME TO THE ROOMS</h1>
+        <p class="p">Pick a door. Choose a nick once. Roam like a gremlin with Wi-Fi.</p>
 
         <div class="slider" style="margin-top:16px;">
-          <!-- #Corinthians -->
           <div class="slide active" style="
             background:
-              radial-gradient(900px 380px at 20% 20%, rgba(184,124,255,.22), transparent 55%),
-              radial-gradient(700px 340px at 80% 10%, rgba(94,231,255,.14), transparent 55%),
-              linear-gradient(135deg, rgba(25,18,40,.65), rgba(8,8,14,.35));
+              radial-gradient(900px 380px at 20% 20%, rgba(184,124,255,.28), transparent 55%),
+              radial-gradient(700px 340px at 80% 10%, rgba(94,231,255,.18), transparent 55%),
+              linear-gradient(135deg, rgba(25,18,40,.70), rgba(8,8,14,.35));
           ">
             <h2>#Corinthians</h2>
             <p>For the Christians — scripture, life, prayer, honest questions, gentle truth. Grace over judgement.</p>
@@ -98,12 +49,11 @@
             </div>
           </div>
 
-          <!-- #cyber -->
           <div class="slide" style="
             background:
-              radial-gradient(900px 380px at 25% 15%, rgba(255,107,214,.20), transparent 55%),
-              radial-gradient(700px 340px at 85% 20%, rgba(94,231,255,.12), transparent 55%),
-              linear-gradient(135deg, rgba(40,10,28,.62), rgba(8,8,14,.35));
+              radial-gradient(900px 380px at 25% 15%, rgba(255,107,214,.26), transparent 55%),
+              radial-gradient(700px 340px at 85% 20%, rgba(94,231,255,.16), transparent 55%),
+              linear-gradient(135deg, rgba(40,10,28,.70), rgba(8,8,14,.35));
           ">
             <h2>#cyber</h2>
             <p>For the naughty chatters — playful banter, memes, mischief. Keep it consensual, keep it respectful.</p>
@@ -113,12 +63,11 @@
             </div>
           </div>
 
-          <!-- #chaos -->
           <div class="slide" style="
             background:
-              radial-gradient(900px 380px at 15% 25%, rgba(94,231,255,.18), transparent 55%),
-              radial-gradient(700px 340px at 85% 10%, rgba(184,124,255,.14), transparent 55%),
-              linear-gradient(135deg, rgba(10,30,35,.58), rgba(8,8,14,.35));
+              radial-gradient(900px 380px at 15% 25%, rgba(94,231,255,.22), transparent 55%),
+              radial-gradient(700px 340px at 85% 10%, rgba(184,124,255,.16), transparent 55%),
+              linear-gradient(135deg, rgba(10,30,35,.68), rgba(8,8,14,.35));
           ">
             <h2>#chaos</h2>
             <p>Agnes game room — games, challenges, chaos-laughs, and “one more round” energy.</p>
@@ -128,12 +77,11 @@
             </div>
           </div>
 
-          <!-- #truth -->
           <div class="slide" style="
             background:
-              radial-gradient(900px 380px at 20% 15%, rgba(93,255,154,.12), transparent 55%),
-              radial-gradient(700px 340px at 85% 15%, rgba(184,124,255,.12), transparent 55%),
-              linear-gradient(135deg, rgba(20,26,22,.58), rgba(8,8,14,.35));
+              radial-gradient(900px 380px at 20% 15%, rgba(93,255,154,.16), transparent 55%),
+              radial-gradient(700px 340px at 85% 15%, rgba(184,124,255,.14), transparent 55%),
+              linear-gradient(135deg, rgba(20,26,22,.66), rgba(8,8,14,.35));
           ">
             <h2>#truth</h2>
             <p>Free-speech channel — big opinions welcome. Attack ideas, not people. No doxxing, no cruelty.</p>
@@ -152,21 +100,17 @@
         </div>
       </section>
 
-      <!-- ABOUT -->
       <section class="card">
         <h2 style="margin:0 0 10px 0; font-size:18px; font-family:var(--mono);">ABOUT THIS PLACE</h2>
         <p class="p">
-          dead_chat is a little online “living room” where chatters can drop in without pressure.
-          Some nights it’s deep conversation, some nights it’s pure silliness, and some nights it’s just
-          having a window open so you don’t feel alone while you scroll, work, game, or overthink.
+          dead_chat is the messy online room where people drop in without pressure.
+          Some nights it’s deep talk, some nights it’s memes, some nights it’s just having a window open so you don’t feel alone.
           <br/><br/>
-          The rooms exist because people are multi-layered: faith, fun, debate, games, chaos, comfort.
-          Come as you are. Lurk if you want. Talk if you want. Leave and return. The only hard line is:
-          keep it human — sharp ideas are fine, cruelty is not.
+          Different rooms for different vibes: faith, mischief, games, debate. Come as you are. Lurk if you want. Talk if you want.
+          Just keep it human — sharp ideas are fine, cruelty is not.
         </p>
       </section>
 
-      <!-- WHY CHAT IS GOOD -->
       <section class="card">
         <h2 style="margin:0 0 14px 0; font-size:18px; font-family:var(--mono);">WHY CHATTING IS GOOD FOR YOU</h2>
 
@@ -211,7 +155,6 @@
     </div>
   </main>
 
-  <!-- Sticky CHAT NOW button -->
   <div class="sticky-chat">
     <a class="btn primary" href="./chat-now.html">CHAT NOW →</a>
   </div>
