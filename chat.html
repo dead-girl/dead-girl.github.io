@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat • #truth</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
+
+    :root{
+      --bg1:#090914;
+      --bg2:#120b1e;
+      --card:rgba(18, 18, 32, .62);
+      --stroke:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      --neon1:#b87cff;
+      --neon2:#5ee7ff;
+      --neon3:#ff6bd6;
+      --good:#5dff9a;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(184,124,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 85% 15%, rgba(94,231,255,.14), transparent 55%),
+        radial-gradient(900px 900px at 60% 95%, rgba(255,107,214,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity:.35;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding:22px 18px;
+      position:relative;
+      isolation:isolate;
+    }
+
+    .card{
+      width:min(1100px, 100%);
+      border:1px solid var(--stroke);
+      background:var(--card);
+      border-radius:22px;
+      padding:18px;
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.55),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+      position:relative;
+      z-index:1;
+    }
+
+    .top{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding:6px 6px 14px 6px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+
+    .left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      min-width: 280px;
+    }
+
+    .avatar{
+      width:46px; height:46px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
+        linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
+      position:relative;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 18px 45px rgba(184,124,255,.22);
+    }
+    .avatar:before, .avatar:after{
+      content:"";
+      position:absolute;
+      top:-10px;
+      width:16px; height:16px;
+      background: linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
+      border:1px solid rgba(255,255,255,.14);
+      transform: rotate(45deg);
+      border-radius:4px;
+      opacity:.95;
+    }
+    .avatar:before{ left:7px; }
+    .avatar:after{ right:7px; }
+
+    .title{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.3px;
+      line-height:1.1;
+    }
+
+    .sub{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+      font-family:var(--mono);
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-family:var(--mono);
+      font-size:12px;
+      color:rgba(255,255,255,.80);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.14);
+    }
+    .dot{
+      width:9px; height:9px;
+      border-radius:50%;
+      background:var(--good);
+      box-shadow: 0 0 18px rgba(93,255,154,.55);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      text-decoration:none;
+      color:rgba(255,255,255,.92);
+      background:rgba(0,0,0,.18);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      font-weight:600;
+      font-family:var(--sans);
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.24);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(184,124,255,.88), rgba(94,231,255,.70));
+      color:#0c0b12;
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .frameWrap{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      background:rgba(0,0,0,.16);
+      padding:10px;
+    }
+
+    iframe{
+      width:100%;
+      height:72vh;
+      min-height:520px;
+      border:0;
+      border-radius:14px;
+      background: rgba(0,0,0,.28);
+    }
+
+    .hint{
+      margin:10px 4px 0 4px;
+      color:rgba(255,255,255,.68);
+      font-size:12px;
+      font-family:var(--mono);
+    }
+    .hint a{ color:rgba(255,255,255,.86); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.28); }
+    .hint a:hover{ border-bottom-color: rgba(94,231,255,.70); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="left">
+          <div class="avatar" aria-hidden="true"></div>
+          <div>
+            <h1 class="title">Atrum Webchat <span id="roomLabel">#truth</span></h1>
+            <p class="sub">same vibe, embedded chat — no theme whiplash</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn" href="./">← back</a>
+          <a class="btn primary" href="#truth">#truth</a>
+          <a class="btn" href="#help">#help</a>
+          <div class="status"><span class="dot"></span> online-ish</div>
+        </div>
+      </div>
+
+      <div class="frameWrap">
+        <iframe id="chatframe" title="Atrum webchat"></iframe>
+        <div class="hint">
+          If the embed ever refuses to load, use:
+          <a href="https://webchat.atrum.org/#truth" target="_blank" rel="noopener">open chat in a new tab</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function roomFromHash() {
+        var h = (window.location.hash || "").trim();
+        if (!h || h === "#") return "#truth";
+        return h.startsWith("#") ? h : ("#" + h);
+      }
+
+      function setRoom() {
+        var room = roomFromHash();
+        document.getElementById("roomLabel").textContent = room;
+        document.title = "Chat • " + room;
+        document.getElementById("chatframe").src = "https://webchat.atrum.org/" + room;
+      }
+
+      window.addEventListener("hashchange", setRoom);
+      setRoom();
+    })();
+  </script>
+</body>
+</html>
