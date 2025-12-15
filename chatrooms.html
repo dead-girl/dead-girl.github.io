@@ -114,6 +114,13 @@
       color: rgba(255,255,255,.86);
       line-height:1.6;
     }
+
+    .btnrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
   </style>
 </head>
 
@@ -142,10 +149,10 @@
     <div class="container">
       <section class="card">
         <h1 class="h1">Chatrooms</h1>
-        <p class="p">Each room has its own vibe. Pick one, or join a few — the “Chat Now” page lets you multi-select.</p>
+        <p class="p">Click “Chat now” on any room to jump straight into that channel. Or use “Chat Now” to join multiple rooms.</p>
 
-        <div style="margin-top:14px;">
-          <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
+        <div class="btnrow">
+          <a class="btn primary" href="./chat-now.html">CHAT NOW (multi-select)</a>
         </div>
       </section>
 
@@ -181,8 +188,9 @@
               </div>
             </div>
 
-            <div style="margin-top:12px;">
-              <a class="btn primary" href="./chat-now.html">Join from Chat Now</a>
+            <div class="btnrow">
+              <a class="btn primary" href="./chat.html?rooms=corinthians#Corinthians">Chat now in #Corinthians</a>
+              <a class="btn" href="./chat-now.html">Join multiple rooms</a>
             </div>
           </div>
         </div>
@@ -216,8 +224,9 @@
               </div>
             </div>
 
-            <div style="margin-top:12px;">
-              <a class="btn primary" href="./chat-now.html">Join from Chat Now</a>
+            <div class="btnrow">
+              <a class="btn primary" href="./chat.html?rooms=cyber#cyber">Chat now in #cyber</a>
+              <a class="btn" href="./chat-now.html">Join multiple rooms</a>
             </div>
           </div>
         </div>
@@ -251,8 +260,9 @@
               </div>
             </div>
 
-            <div style="margin-top:12px;">
-              <a class="btn primary" href="./chat-now.html">Join from Chat Now</a>
+            <div class="btnrow">
+              <a class="btn primary" href="./chat.html?rooms=chaos#chaos">Chat now in #chaos</a>
+              <a class="btn" href="./chat-now.html">Join multiple rooms</a>
             </div>
           </div>
         </div>
@@ -286,8 +296,9 @@
               </div>
             </div>
 
-            <div style="margin-top:12px;">
-              <a class="btn primary" href="./chat-now.html">Join from Chat Now</a>
+            <div class="btnrow">
+              <a class="btn primary" href="./chat.html?rooms=truth#truth">Chat now in #truth</a>
+              <a class="btn" href="./chat-now.html">Join multiple rooms</a>
             </div>
           </div>
         </div>
