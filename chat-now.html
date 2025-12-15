@@ -3,74 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chat Now • Dead Girl Chat</title>
+  <title>Chat Now • dead_chat</title>
   <link rel="stylesheet" href="./assets/style.css" />
 
   <style>
-    .room-grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:14px;
-      margin-top:14px;
-    }
+    .room-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-top:14px; }
     @media (max-width: 880px){ .room-grid{ grid-template-columns: 1fr; } }
 
     .room{
-      display:block;
-      cursor:pointer;
+      display:block; cursor:pointer;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
       border-radius:18px;
       padding:16px;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease, filter .12s ease;
       user-select:none;
-      position:relative;
-      overflow:hidden;
+      position:relative; overflow:hidden;
     }
     .room:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.22);
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+      transform: translateY(-2px) rotate(0deg);
+      border-color: rgba(255,255,255,.24);
+      box-shadow: 0 18px 40px rgba(0,0,0,.30);
+      filter: saturate(1.2);
     }
 
-    .room .toprow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .room .toprow{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .room .name{ font-family: var(--mono); font-size: 14px; }
+    .room .desc{ margin-top:10px; color: var(--muted); line-height:1.55; }
+    .room input{ width:18px; height:18px; accent-color: #5ee7ff; }
 
-    .room .name{
-      font-family: var(--mono);
-      font-size: 14px;
-    }
-    .room .desc{
-      margin-top:10px;
-      color: var(--muted);
-      line-height:1.55;
-    }
-
-    .room input{
-      width:18px;
-      height:18px;
-      accent-color: #5ee7ff;
-    }
-
-    /* themed backgrounds per room */
     .room[data-room="#Corinthians"]::before,
     .room[data-room="#cyber"]::before,
     .room[data-room="#chaos"]::before,
     .room[data-room="#truth"]::before{
       content:"";
-      position:absolute;
-      inset:-40px;
-      opacity:.55;
-      filter: blur(0px);
-      pointer-events:none;
+      position:absolute; inset:-40px;
+      opacity:.55; pointer-events:none;
       transform: rotate(-2deg);
     }
-
     .room[data-room="#Corinthians"]::before{
       background:
         radial-gradient(700px 260px at 20% 20%, rgba(184,124,255,.22), transparent 55%),
@@ -92,7 +62,6 @@
         radial-gradient(700px 260px at 85% 15%, rgba(184,124,255,.10), transparent 55%);
     }
 
-    /* glow when selected */
     .room.selected{
       border-color: rgba(94,231,255,.35);
       box-shadow:
@@ -100,21 +69,8 @@
         0 0 0 1px rgba(255,255,255,.06) inset;
     }
 
-    .row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:16px;
-    }
-
-    .note{
-      font-family: var(--mono);
-      font-size:12px;
-      color: rgba(255,255,255,.70);
-      margin-top:10px;
-      line-height:1.6;
-    }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:16px; }
+    .note{ font-family: var(--mono); font-size:12px; color: rgba(255,255,255,.74); margin-top:10px; line-height:1.6; }
 
     .error{
       display:none;
@@ -133,20 +89,19 @@
 <body data-page="chatnow">
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+      <a class="brand" href="./index.html" aria-label="Go to Home">
+        <img class="logo-img" src="./assets/deadchat_logo_transparent_small.png" alt="DEADCHAT" />
         <div>
-          <div class="site-name">Dead Girl Chat</div>
+          <div class="site-name">dead_chat</div>
           <div class="site-tag">pick rooms • one nick • one session</div>
         </div>
-      </div>
+      </a>
 
       <nav class="nav" aria-label="Site navigation">
         <a href="./index.html" data-page="home">Home</a>
         <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
-        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
         <a href="./chatters.html" data-page="chatters">Chatters</a>
-        <a href="./quotes.html" data-page="quotes">Quotes</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now →</a>
       </nav>
     </div>
   </header>
@@ -155,7 +110,7 @@
     <div class="container">
       <section class="card">
         <h1 class="h1">Choose your rooms</h1>
-        <p class="p">Tick what you want. Then <strong>JOIN NOW</strong> connects once and joins all selected channels.</p>
+        <p class="p">Tick what you want, then <strong>JOIN NOW</strong> joins everything in one go.</p>
 
         <div class="room-grid" id="roomGrid">
           <label class="room" data-room="#Corinthians">
@@ -192,21 +147,19 @@
         </div>
 
         <div class="row">
-          <a class="btn primary" href="#" id="joinBtn">JOIN NOW</a>
+          <a class="btn primary" href="#" id="joinBtn">JOIN NOW →</a>
           <a class="btn" href="./chatrooms.html">Read room details</a>
         </div>
 
         <div class="error" id="errBox">Pick at least one room first 🙂</div>
 
-        <div class="note">
-          Tip: you’ll choose your nickname once. Inside chat, switch rooms using the channel list.
-        </div>
+        <div class="note">Tip: you’ll choose your nickname once. Inside chat, switch rooms using the channel list.</div>
       </section>
     </div>
   </main>
 
   <div class="sticky-chat">
-    <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
+    <a class="btn primary" href="./chat-now.html">CHAT NOW →</a>
   </div>
 
   <script src="./assets/site.js"></script>
@@ -234,13 +187,8 @@
       }
 
       function buildJoinUrl(rooms) {
-        // rooms is like ["#truth","#chaos"]
         var clean = [];
-        for (var i = 0; i < rooms.length; i++) {
-          clean.push(rooms[i].replace("#", "")); // remove leading #
-        }
-
-        // Start in the first selected room
+        for (var i = 0; i < rooms.length; i++) clean.push(rooms[i].replace("#", ""));
         var start = (rooms[0] || "#truth").replace("#", "");
         return "./chat.html?rooms=" + encodeURIComponent(clean.join(",")) + "#" + encodeURIComponent(start);
       }
