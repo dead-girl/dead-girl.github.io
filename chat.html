@@ -3,350 +3,157 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chat • #truth</title>
+  <title>Chat • Dead Girl Chat</title>
+  <link rel="stylesheet" href="./assets/style.css" />
 
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
-
-    :root{
-      --bg1:#090914;
-      --bg2:#120b1e;
-      --card:rgba(18, 18, 32, .62);
-      --stroke:rgba(255,255,255,.12);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-      --neon1:#b87cff;
-      --neon2:#5ee7ff;
-      --neon3:#ff6bd6;
-      --good:#5dff9a;
-    }
-
-    *{ box-sizing:border-box; }
-    html, body{ height:100%; }
-
-    body{
-      margin:0;
-      font-family:var(--sans);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(184,124,255,.18), transparent 55%),
-        radial-gradient(900px 700px at 85% 15%, rgba(94,231,255,.14), transparent 55%),
-        radial-gradient(900px 900px at 60% 95%, rgba(255,107,214,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
-
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 22px 22px;
-      opacity:.35;
-      pointer-events:none;
-      mix-blend-mode: overlay;
-    }
-
-    .wrap{
-      min-height:100%;
-      display:grid;
-      place-items:center;
-      padding:22px 18px;
-      position:relative;
-      isolation:isolate;
-    }
-
-    .card{
-      width:min(1100px, 100%);
-      border:1px solid var(--stroke);
-      background:var(--card);
-      border-radius:22px;
-      padding:18px;
-      backdrop-filter: blur(14px);
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.55),
-        0 0 0 1px rgba(255,255,255,.06) inset;
-      position:relative;
-      z-index:1;
-    }
-
-    .top{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      padding:6px 6px 14px 6px;
+    .chat-wrap{ display:grid; gap:14px; }
+    .chat-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
       border-bottom:1px solid rgba(255,255,255,.10);
+      padding-bottom:12px;
+      margin-bottom:12px;
     }
-
-    .left{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      min-width: 280px;
-    }
-
-    .avatar{
-      width:46px; height:46px;
-      border-radius:14px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
-        linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
-      position:relative;
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow: 0 18px 45px rgba(184,124,255,.22);
-    }
-    .avatar:before, .avatar:after{
-      content:"";
-      position:absolute;
-      top:-10px;
-      width:16px; height:16px;
-      background: linear-gradient(135deg, rgba(184,124,255,.95), rgba(94,231,255,.75));
-      border:1px solid rgba(255,255,255,.14);
-      transform: rotate(45deg);
-      border-radius:4px;
-      opacity:.95;
-    }
-    .avatar:before{ left:7px; }
-    .avatar:after{ right:7px; }
-
-    .title{
+    .chat-title{
       margin:0;
-      font-size:18px;
-      letter-spacing:-.3px;
-      line-height:1.1;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: rgba(255,255,255,.86);
     }
-
-    .sub{
-      margin:6px 0 0 0;
-      color:var(--muted);
-      font-size:13px;
-      font-family:var(--mono);
-    }
-
-    .status{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-family:var(--mono);
+    .pillbar{ display:flex; gap:8px; flex-wrap:wrap; }
+    .pill{
+      font-family: var(--mono);
       font-size:12px;
-      color:rgba(255,255,255,.80);
-      padding:8px 10px;
+      padding:6px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.14);
+      background: rgba(0,0,0,.14);
     }
-    .dot{
-      width:9px; height:9px;
-      border-radius:50%;
-      background:var(--good);
-      box-shadow: 0 0 18px rgba(93,255,154,.55);
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      text-decoration:none;
-      color:rgba(255,255,255,.92);
-      background:rgba(0,0,0,.18);
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      font-weight:600;
-      font-family:var(--sans);
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.24);
-      box-shadow: 0 18px 40px rgba(0,0,0,.35);
-    }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(184,124,255,.88), rgba(94,231,255,.70));
-      color:#0c0b12;
-      border-color: rgba(255,255,255,.18);
-    }
-.btn.roombtn.active{
-  background: linear-gradient(135deg, rgba(184,124,255,.88), rgba(94,231,255,.70));
-  color:#0c0b12;
-  border-color: rgba(255,255,255,.18);
-}
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .frameWrap{
-      margin-top:14px;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      background:rgba(0,0,0,.16);
-      padding:10px;
-    }
-
-    iframe{
+    .frame{
       width:100%;
       height:72vh;
       min-height:520px;
       border:0;
-      border-radius:14px;
-      background: rgba(0,0,0,.28);
+      border-radius:18px;
+      background: rgba(0,0,0,.22);
     }
-
     .hint{
-      margin:10px 4px 0 4px;
-      color:rgba(255,255,255,.68);
+      margin-top:10px;
+      font-family: var(--mono);
       font-size:12px;
-      font-family:var(--mono);
+      color: rgba(255,255,255,.70);
+      line-height:1.6;
     }
-    .hint a{ color:rgba(255,255,255,.86); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.28); }
+    .hint a{
+      text-decoration:none;
+      border-bottom:1px dotted rgba(255,255,255,.28);
+    }
     .hint a:hover{ border-bottom-color: rgba(94,231,255,.70); }
   </style>
 </head>
 
-<body>
-  <div class="wrap">
-    <div class="card">
-      <div class="top">
-        <div class="left">
-          <div class="avatar" aria-hidden="true"></div>
+<body data-page="chatnow">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="site-name">Dead Girl Chat</div>
+          <div class="site-tag">same nick • joined rooms</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Site navigation">
+        <a href="./index.html" data-page="home">Home</a>
+        <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
+        <a href="./chatters.html" data-page="chatters">Chatters</a>
+        <a href="./quotes.html" data-page="quotes">Quotes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container chat-wrap">
+      <section class="card">
+        <div class="chat-top">
           <div>
-            <h1 class="title">Atrum Webchat <span id="roomLabel">#truth</span></h1>
-            <p class="sub">same vibe, embedded chat — no theme whiplash</p>
+            <p class="chat-title">You joined:</p>
+            <div class="pillbar" id="pillbar"></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" href="./chat-now.html">Change rooms</a>
+            <a class="btn" id="openNewTab" href="#" target="_blank" rel="noopener">Open chat in new tab</a>
           </div>
         </div>
 
-        <div class="actions">
-<a class="btn roombtn" href="#truth" data-room="#truth">#truth</a>
-<a class="btn roombtn" href="#Corinthians" data-room="#Corinthians">#Corinthians</a>
-<a class="btn roombtn" href="#cyber" data-room="#cyber">#cyber</a>
-<a class="btn roombtn" href="#chaos" data-room="#chaos">#chaos</a>
-          <div class="status"><span class="dot"></span> online-ish</div>
+        <iframe class="frame" id="chatframe" title="Atrum webchat"></iframe>
 
-          <div class="status"><span class="dot"></span> online-ish</div>
-        </div>
-      </div>
-
-      <div class="frameWrap">
-        <iframe id="chatframe" title="Atrum webchat"></iframe>
         <div class="hint">
-          If the embed ever refuses to load, use:
-          <a href="https://webchat.atrum.org/#truth" target="_blank" rel="noopener">open chat in a new tab</a>
+          Switch rooms using the channel list inside chat. If anything glitches, use the “new tab” button.
         </div>
-      </div>
+      </section>
     </div>
-  </div>
+  </main>
 
-<script>
-  (function () {
-    var CANON = {
-      "#truth": "#truth",
-      "#corinthians": "#Corinthians",
-      "#cyber": "#cyber",
-      "#chaos": "#chaos"
-    };
+  <script src="./assets/site.js"></script>
+  <script>
+    (function () {
+      var ALLOWED = {
+        "#truth": true,
+        "#corinthians": true,
+        "#cyber": true,
+        "#chaos": true
+      };
 
-    function normaliseRoom(raw) {
-      var r = (raw || "").trim();
-      if (!r) return null;
-      if (!r.startsWith("#")) r = "#" + r;
-      var key = r.toLowerCase();
-      return CANON[key] || null;
-    }
+      function normaliseRoom(raw) {
+        var r = (raw || "").trim();
+        if (!r) return null;
+        if (r.charAt(0) !== "#") r = "#" + r;
+        var key = r.toLowerCase();
+        if (!ALLOWED[key]) return null;
 
-    function getRoomFromHash() {
-      return normaliseRoom(window.location.hash) || "#truth";
-    }
+        // keep nice case for Corinthians
+        if (key === "#corinthians") return "#Corinthians";
+        return key; // #truth #cyber #chaos
+      }
 
-    function parseRoomsParam() {
-      var params = new URLSearchParams(window.location.search || "");
-      var raw = params.get("rooms");
-      if (!raw) return [];
-      var parts = raw.split(",");
-      var out = [];
-      var seen = {};
-      for (var i = 0; i < parts.length; i++) {
-        var r = normaliseRoom(parts[i]);
-        if (r && !seen[r.toLowerCase()]) {
-          seen[r.toLowerCase()] = true;
-          out.push(r);
+      function parseRoomsParam() {
+        var params = new URLSearchParams(window.location.search || "");
+        var raw = params.get("rooms") || "";
+        var parts = raw.split(",");
+        var out = [];
+        var seen = {};
+        for (var i = 0; i < parts.length; i++) {
+          var r = normaliseRoom(parts[i]);
+          if (r && !seen[r.toLowerCase()]) {
+            seen[r.toLowerCase()] = true;
+            out.push(r);
+          }
         }
-      }
-      return out;
-    }
-
-    function setHeader(room) {
-      document.getElementById("roomLabel").textContent = room;
-      document.title = "Chat • " + room;
-    }
-
-    function applyButtons(selectedRooms, activeRoom) {
-      var allowed = {};
-      for (var i = 0; i < selectedRooms.length; i++) {
-        allowed[selectedRooms[i].toLowerCase()] = true;
+        if (!out.length) out = ["#truth"];
+        return out;
       }
 
-      var btns = document.querySelectorAll(".roombtn[data-room]");
-      for (var j = 0; j < btns.length; j++) {
-        var r = normaliseRoom(btns[j].getAttribute("data-room"));
-        if (!r) continue;
+      var rooms = parseRoomsParam();
 
-        // Hide buttons for rooms the user didn’t select
-        btns[j].style.display = allowed[r.toLowerCase()] ? "" : "none";
-
-        // Active glow
-        if (r.toLowerCase() === activeRoom.toLowerCase()) btns[j].classList.add("active");
-        else btns[j].classList.remove("active");
-      }
-    }
-
-    function buildOrderedRooms(active, rooms) {
-      // ensure active is included + first
-      var out = [active];
-      var seen = {};
-      seen[active.toLowerCase()] = true;
-
+      // Render pills
+      var pillbar = document.getElementById("pillbar");
       for (var i = 0; i < rooms.length; i++) {
-        var r = rooms[i];
-        if (!seen[r.toLowerCase()]) {
-          seen[r.toLowerCase()] = true;
-          out.push(r);
-        }
+        var div = document.createElement("div");
+        div.className = "pill";
+        div.textContent = rooms[i];
+        pillbar.appendChild(div);
       }
-      return out;
-    }
 
-    // Rooms selected by the user (from index.html)
-    var selected = parseRoomsParam();
-    if (!selected.length) selected = ["#truth"]; // safe default
+      // Connect ONCE: join selected rooms in one Kiwi session
+      var joinedPath = rooms.join(",");
+      document.getElementById("chatframe").src = "https://webchat.atrum.org/" + joinedPath;
 
-    // Active room is the hash (e.g. #cyber). If it's not in selected, add it.
-    var active = getRoomFromHash();
-    selected = buildOrderedRooms(active, selected);
-
-    // Connect ONCE (same nick/session)
-    document.getElementById("chatframe").src = "https://webchat.atrum.org/" + selected.join(",");
-
-    // Set header + glow
-    setHeader(active);
-    applyButtons(selected, active);
-
-    // Don’t reconnect on room change — just update label + glow
-    window.addEventListener("hashchange", function () {
-      var now = getRoomFromHash();
-      setHeader(now);
-      applyButtons(selected, now);
-    });
-  })();
-</script>
-
-
+      // New tab link (same rooms)
+      document.getElementById("openNewTab").href = "https://webchat.atrum.org/" + joinedPath;
+    })();
+  </script>
 </body>
 </html>
