@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat Now • Dead Girl Chat</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+
+  <style>
+    .room-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 880px){ .room-grid{ grid-template-columns: 1fr; } }
+
+    .room{
+      display:block;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      border-radius:18px;
+      padding:16px;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      user-select:none;
+      position:relative;
+      overflow:hidden;
+    }
+    .room:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+    }
+
+    .room .toprow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .room .name{
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+    .room .desc{
+      margin-top:10px;
+      color: var(--muted);
+      line-height:1.55;
+    }
+
+    .room input{
+      width:18px;
+      height:18px;
+      accent-color: #5ee7ff;
+    }
+
+    /* themed backgrounds per room */
+    .room[data-room="#Corinthians"]::before,
+    .room[data-room="#cyber"]::before,
+    .room[data-room="#chaos"]::before,
+    .room[data-room="#truth"]::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      opacity:.55;
+      filter: blur(0px);
+      pointer-events:none;
+      transform: rotate(-2deg);
+    }
+
+    .room[data-room="#Corinthians"]::before{
+      background:
+        radial-gradient(700px 260px at 20% 20%, rgba(184,124,255,.22), transparent 55%),
+        radial-gradient(700px 260px at 80% 30%, rgba(94,231,255,.12), transparent 55%);
+    }
+    .room[data-room="#cyber"]::before{
+      background:
+        radial-gradient(700px 260px at 25% 15%, rgba(255,107,214,.22), transparent 55%),
+        radial-gradient(700px 260px at 85% 25%, rgba(94,231,255,.10), transparent 55%);
+    }
+    .room[data-room="#chaos"]::before{
+      background:
+        radial-gradient(700px 260px at 15% 25%, rgba(94,231,255,.18), transparent 55%),
+        radial-gradient(700px 260px at 85% 15%, rgba(184,124,255,.12), transparent 55%);
+    }
+    .room[data-room="#truth"]::before{
+      background:
+        radial-gradient(700px 260px at 20% 15%, rgba(93,255,154,.14), transparent 55%),
+        radial-gradient(700px 260px at 85% 15%, rgba(184,124,255,.10), transparent 55%);
+    }
+
+    /* glow when selected */
+    .room.selected{
+      border-color: rgba(94,231,255,.35);
+      box-shadow:
+        0 18px 45px rgba(94,231,255,.10),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:16px;
+    }
+
+    .note{
+      font-family: var(--mono);
+      font-size:12px;
+      color: rgba(255,255,255,.70);
+      margin-top:10px;
+      line-height:1.6;
+    }
+
+    .error{
+      display:none;
+      margin-top:12px;
+      color: rgba(255,255,255,.90);
+      background: rgba(255,107,214,.12);
+      border:1px solid rgba(255,107,214,.22);
+      padding:10px 12px;
+      border-radius:14px;
+      font-family: var(--mono);
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body data-page="chatnow">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="site-name">Dead Girl Chat</div>
+          <div class="site-tag">pick rooms • one nick • one session</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Site navigation">
+        <a href="./index.html" data-page="home">Home</a>
+        <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
+        <a href="./chatters.html" data-page="chatters">Chatters</a>
+        <a href="./quotes.html" data-page="quotes">Quotes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <section class="card">
+        <h1 class="h1">Choose your rooms</h1>
+        <p class="p">Tick what you want. Then <strong>JOIN NOW</strong> connects once and joins all selected channels.</p>
+
+        <div class="room-grid" id="roomGrid">
+          <label class="room" data-room="#Corinthians">
+            <div class="toprow">
+              <div class="name">#Corinthians</div>
+              <input type="checkbox" name="room" value="#Corinthians" />
+            </div>
+            <div class="desc">For the Christians — scripture, life, prayer, honest questions, gentle truth.</div>
+          </label>
+
+          <label class="room" data-room="#cyber">
+            <div class="toprow">
+              <div class="name">#cyber</div>
+              <input type="checkbox" name="room" value="#cyber" />
+            </div>
+            <div class="desc">For the naughty chatters — playful banter, memes, mischief. Keep it consensual + respectful.</div>
+          </label>
+
+          <label class="room" data-room="#chaos">
+            <div class="toprow">
+              <div class="name">#chaos</div>
+              <input type="checkbox" name="room" value="#chaos" />
+            </div>
+            <div class="desc">Agnes game room — games, challenges, chaos-laughs, and “one more round” energy.</div>
+          </label>
+
+          <label class="room" data-room="#truth">
+            <div class="toprow">
+              <div class="name">#truth</div>
+              <input type="checkbox" name="room" value="#truth" checked />
+            </div>
+            <div class="desc">Free-speech channel — big opinions welcome. Attack ideas, not people. No doxxing.</div>
+          </label>
+        </div>
+
+        <div class="row">
+          <a class="btn primary" href="#" id="joinBtn">JOIN NOW</a>
+          <a class="btn" href="./chatrooms.html">Read room details</a>
+        </div>
+
+        <div class="error" id="errBox">Pick at least one room first 🙂</div>
+
+        <div class="note">
+          Tip: you’ll choose your nickname once. Inside chat, switch rooms using the channel list.
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="sticky-chat">
+    <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
+  </div>
+
+  <script src="./assets/site.js"></script>
+  <script>
+    (function () {
+      var grid = document.getElementById("roomGrid");
+      var joinBtn = document.getElementById("joinBtn");
+      var errBox = document.getElementById("errBox");
+
+      function updateSelectedGlow() {
+        var labels = grid.querySelectorAll(".room");
+        for (var i = 0; i < labels.length; i++) {
+          var cb = labels[i].querySelector('input[type="checkbox"]');
+          labels[i].classList.toggle("selected", !!(cb && cb.checked));
+        }
+      }
+
+      function getSelectedRooms() {
+        var boxes = grid.querySelectorAll('input[type="checkbox"][name="room"]');
+        var out = [];
+        for (var i = 0; i < boxes.length; i++) {
+          if (boxes[i].checked) out.push(boxes[i].value);
+        }
+        return out;
+      }
+
+      function buildJoinUrl(rooms) {
+        // rooms is like ["#truth","#chaos"]
+        var clean = [];
+        for (var i = 0; i < rooms.length; i++) {
+          clean.push(rooms[i].replace("#", "")); // remove leading #
+        }
+
+        // Start in the first selected room
+        var start = (rooms[0] || "#truth").replace("#", "");
+        return "./chat.html?rooms=" + encodeURIComponent(clean.join(",")) + "#" + encodeURIComponent(start);
+      }
+
+      grid.addEventListener("change", function () {
+        errBox.style.display = "none";
+        updateSelectedGlow();
+      });
+
+      joinBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var rooms = getSelectedRooms();
+        if (!rooms.length) {
+          errBox.style.display = "block";
+          return;
+        }
+        window.location.href = buildJoinUrl(rooms);
+      });
+
+      updateSelectedGlow();
+    })();
+  </script>
+</body>
+</html>
