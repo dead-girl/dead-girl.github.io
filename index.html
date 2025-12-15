@@ -3,28 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dead Girl Chat • Atrum</title>
+  <title>dead_chat • Atrum</title>
   <link rel="stylesheet" href="./assets/style.css" />
+
+  <style>
+    /* Home-only polish (we’ll roll this into style.css for all pages next) */
+    .brand { text-decoration:none; color: inherit; }
+    .logo-img{
+      width:40px; height:40px;
+      border-radius:14px;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 18px 45px rgba(184,124,255,.16);
+      display:block;
+    }
+
+    .nav a{
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .nav a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.28);
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 18px 40px rgba(0,0,0,.22);
+    }
+
+    /* Move CHAT NOW to left side (mid-screen) */
+    .sticky-chat{
+      left:18px;
+      top:50%;
+      bottom:auto;
+      transform: translateY(-50%);
+    }
+    .sticky-chat .btn{
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding:14px 12px;
+      border-radius: 16px;
+      letter-spacing: .4px;
+    }
+
+    /* Big emojis */
+    .big-emoji{
+      font-size: 40px;
+      line-height: 1;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.28));
+    }
+  </style>
 </head>
 
 <body data-page="home">
   <!-- Fixed header -->
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+      <a class="brand" href="./index.html" aria-label="Go to Home">
+        <img class="logo-img" src="https://sharey.org/WgqWZ6.png" alt="dead_chat logo" />
         <div>
-          <div class="site-name">Dead Girl Chat</div>
-          <div class="site-tag">nerdy room • messy desk • real people</div>
+          <div class="site-name">dead_chat</div>
+          <div class="site-tag">dead_girl’s lounge • messy desk • real people</div>
         </div>
-      </div>
+      </a>
 
       <nav class="nav" aria-label="Site navigation">
         <a href="./index.html" data-page="home">Home</a>
         <a href="./chatrooms.html" data-page="chatrooms">Chatrooms</a>
-        <a href="./chat-now.html" data-page="chatnow">Chat Now</a>
         <a href="./chatters.html" data-page="chatters">Chatters</a>
-        <a href="./quotes.html" data-page="quotes">Quotes</a>
+        <a href="./chat-now.html" data-page="chatnow">Chat Now →</a>
       </nav>
     </div>
   </header>
@@ -35,7 +80,7 @@
       <!-- HERO SLIDER -->
       <section class="card">
         <h1 class="h1">Welcome to the Rooms</h1>
-        <p class="p">Pick a vibe. Same browser, same nick, same crew — just different corners of the house.</p>
+        <p class="p">Four vibes. One house. Pick a door — you’ll choose a nick once, then move around freely inside chat.</p>
 
         <div class="slider" style="margin-top:16px;">
           <!-- #Corinthians -->
@@ -48,8 +93,8 @@
             <h2>#Corinthians</h2>
             <p>For the Christians — scripture, life, prayer, honest questions, gentle truth. Grace over judgement.</p>
             <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <a class="btn primary" href="./chat.html#Corinthians">Enter #Corinthians</a>
-              <a class="btn" href="./chatrooms.html">See all rooms</a>
+              <a class="btn primary" href="./chat.html?rooms=corinthians#Corinthians">Chat now</a>
+              <a class="btn" href="./chatrooms.html">Room details</a>
             </div>
           </div>
 
@@ -63,8 +108,8 @@
             <h2>#cyber</h2>
             <p>For the naughty chatters — playful banter, memes, mischief. Keep it consensual, keep it respectful.</p>
             <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <a class="btn primary" href="./chat.html#cyber">Enter #cyber</a>
-              <a class="btn" href="./chatrooms.html">See all rooms</a>
+              <a class="btn primary" href="./chat.html?rooms=cyber#cyber">Chat now</a>
+              <a class="btn" href="./chatrooms.html">Room details</a>
             </div>
           </div>
 
@@ -78,8 +123,8 @@
             <h2>#chaos</h2>
             <p>Agnes game room — games, challenges, chaos-laughs, and “one more round” energy.</p>
             <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <a class="btn primary" href="./chat.html#chaos">Enter #chaos</a>
-              <a class="btn" href="./chatrooms.html">See all rooms</a>
+              <a class="btn primary" href="./chat.html?rooms=chaos#chaos">Chat now</a>
+              <a class="btn" href="./chatrooms.html">Room details</a>
             </div>
           </div>
 
@@ -93,12 +138,11 @@
             <h2>#truth</h2>
             <p>Free-speech channel — big opinions welcome. Attack ideas, not people. No doxxing, no cruelty.</p>
             <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <a class="btn primary" href="./chat.html#truth">Enter #truth</a>
-              <a class="btn" href="./chatrooms.html">See all rooms</a>
+              <a class="btn primary" href="./chat.html?rooms=truth#truth">Chat now</a>
+              <a class="btn" href="./chatrooms.html">Room details</a>
             </div>
           </div>
 
-          <!-- dots -->
           <div class="dots" aria-label="Slider controls">
             <div class="dot active" title="Corinthians"></div>
             <div class="dot" title="cyber"></div>
@@ -112,8 +156,13 @@
       <section class="card">
         <h2 style="margin:0 0 10px 0; font-size:18px; font-family:var(--mono);">ABOUT THIS PLACE</h2>
         <p class="p">
-          This is a little corner of the internet where chatters come together to talk, laugh, vent, debate,
-          share wins, share chaos, and still show up tomorrow. Different rooms, different vibes — same house.
+          dead_chat is a little online “living room” where chatters can drop in without pressure.
+          Some nights it’s deep conversation, some nights it’s pure silliness, and some nights it’s just
+          having a window open so you don’t feel alone while you scroll, work, game, or overthink.
+          <br/><br/>
+          The rooms exist because people are multi-layered: faith, fun, debate, games, chaos, comfort.
+          Come as you are. Lurk if you want. Talk if you want. Leave and return. The only hard line is:
+          keep it human — sharp ideas are fine, cruelty is not.
         </p>
       </section>
 
@@ -123,37 +172,37 @@
 
         <div class="grid">
           <div class="icon-card">
-            <div class="icon">🧠 dopamine (the good kind)</div>
+            <div class="big-emoji">🧠</div>
             <h3>Micro-connection</h3>
-            <p>A quick hello can interrupt doom spirals and bring you back into the human world.</p>
+            <p>A tiny hello can interrupt a spiral and pull you back into the human world.</p>
           </div>
 
           <div class="icon-card">
-            <div class="icon">🫶 belonging</div>
-            <h3>Low-pressure community</h3>
-            <p>Drop in, talk, lurk, laugh — you don’t have to “perform” to be welcome.</p>
+            <div class="big-emoji">🫶</div>
+            <h3>Belonging without performing</h3>
+            <p>Drop in, talk, lurk, laugh — you don’t have to “be on” to be welcome.</p>
           </div>
 
           <div class="icon-card">
-            <div class="icon">⚡ perspective</div>
-            <h3>Reality check</h3>
-            <p>You get reminded that your thoughts aren’t the whole universe — and that’s a relief.</p>
+            <div class="big-emoji">⚡</div>
+            <h3>Perspective</h3>
+            <p>Fresh eyes, different experiences, better options. Sometimes that’s all you needed.</p>
           </div>
 
           <div class="icon-card">
-            <div class="icon">🎮 play</div>
-            <h3>Joy + games</h3>
-            <p>Sometimes the nervous system just needs fun. Chaos is a form of care.</p>
+            <div class="big-emoji">🎮</div>
+            <h3>Play</h3>
+            <p>Joy is nervous-system medicine. Games and banter count as self-care.</p>
           </div>
 
           <div class="icon-card">
-            <div class="icon">🧰 support</div>
-            <h3>Help without the awkward</h3>
-            <p>Ask for advice, get ideas, ignore the rest. It’s your life — we’re just the toolbox.</p>
+            <div class="big-emoji">🧰</div>
+            <h3>Support that’s not awkward</h3>
+            <p>Ask, get answers, ignore what doesn’t fit. It’s your life — we’re just the toolbox.</p>
           </div>
 
           <div class="icon-card">
-            <div class="icon">🕯️ grounding</div>
+            <div class="big-emoji">🕯️</div>
             <h3>Ritual</h3>
             <p>Showing up regularly is a tiny anchor. Tiny anchors hold big ships.</p>
           </div>
@@ -164,7 +213,7 @@
 
   <!-- Sticky CHAT NOW button -->
   <div class="sticky-chat">
-    <a class="btn primary" href="./chat-now.html">CHAT NOW</a>
+    <a class="btn primary" href="./chat-now.html">CHAT NOW →</a>
   </div>
 
   <script src="./assets/site.js"></script>
